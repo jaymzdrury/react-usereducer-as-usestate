@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ChangeEvent, FormEvent, Fragment, useReducer } from "react";
+
+interface Todo {
+  msg: string,
+  tags: string[],
+  disabled: boolean
+}
 
 function App() {
+  const [todo, updateTodo] = useReducer(
+    (data: Todo, partialData: Partial<Todo>) => ({
+      ...data,
+      ...partialData
+    }),
+    {msg: '', tags: [], disabled: true}
+  )
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    updateTodo({tags: [...todo.tags, todo.msg], msg: '', disabled: true})
+  }
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateTodo({msg: e.target.value, disabled: false})
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <form onSubmit={onSubmit}>
+        <input value={todo.msg} onChange={onChange} />
+        <button type="submit" disabled={todo.disabled}>Submit</button>
+      </form>
+      {todo.tags.map(t => <p key={t}>{t}</p>)}
+    </Fragment>
   );
 }
 
