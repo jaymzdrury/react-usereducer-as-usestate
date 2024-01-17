@@ -1,25 +1,30 @@
-## React - useReducer as useState
+# React + TypeScript + Vite
 
-<img src="https://images.unsplash.com/photo-1527409335569-f0e5c91fa707?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="React" width="350" />
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-***
+Currently, two official plugins are available:
 
-instead of multiple useState's...
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-```JavaScript
-    const [msg, msgSet] = useState('')
-    const [todos, todosSet] = useState([])
-    const [disabled, disabledSet] = useState(true)
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
 ```
 
-useReducer instead...
-
-```JavaScript
-    const [todo, updateTodo] = useReducer(
-        (data: Todo, partialData: Partial<Todo>) => ({
-        ...data,
-        ...partialData
-        }),
-        {msg: '', tags: [], disabled: true}
-    )
-```
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
